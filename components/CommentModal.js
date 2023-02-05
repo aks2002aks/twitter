@@ -17,13 +17,12 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import Moment from "react-moment";
-
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);
-
   const [post, setPost] = useState({});
   const [input, setInput] = useState("");
   const router = useRouter();
@@ -74,10 +73,12 @@ export default function CommentModal() {
               </div>
             </div>
             <div className="p-2 flex items-center space-x-1 relative">
-              <img
+              <Image
                 className="h-11 w-11 rounded-full mr-4"
                 src={post?.data()?.userImg}
                 alt="user-img"
+                width={44}
+                height={44}
               />
               <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">
                 {post?.data()?.name}
@@ -94,10 +95,12 @@ export default function CommentModal() {
             </p>
 
             <div className="flex  p-3 space-x-3">
-              <img
+              <Image
                 src={session.user.image}
                 alt="user-img"
                 className="h-11 w-11 rounded-full cursor-pointer hover:brightness-95"
+                width={44}
+                height={44}
               />
               <div className="w-full divide-y divide-gray-200">
                 <div className="">
@@ -112,18 +115,6 @@ export default function CommentModal() {
 
                 <div className="flex items-center justify-between pt-2.5">
                   <div className="flex">
-                    <div
-                      className=""
-                      // onClick={() => filePickerRef.current.click()}
-                    >
-                      <PhotographIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
-                      {/* <input
-                        type="file"
-                        hidden
-                        ref={filePickerRef}
-                        onChange={addImageToPost}
-                      /> */}
-                    </div>
                     <EmojiHappyIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
                   </div>
                   <button

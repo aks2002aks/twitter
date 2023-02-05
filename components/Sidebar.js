@@ -11,11 +11,13 @@ import {
   HiOutlineLogin,
 } from "react-icons/hi";
 import { MdListAlt, MdMessage, MdTravelExplore } from "react-icons/md";
-
+import { useRouter } from "next/router";
 import { useSession, signOut, signIn } from "next-auth/react";
 
 export default function Sidebar({ tab }) {
   const { data: session } = useSession();
+  const router = useRouter();
+
   return (
     <>
       <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full">
@@ -30,51 +32,107 @@ export default function Sidebar({ tab }) {
         </div>
         {/* menu */}
         <div className="mt-4 mb-2.5 xl:items-start">
-          <SidebarMenuitem
-            text="Home"
-            Icon={HiHome}
-            active={tab == "Home" ? true : false}
-          />
-          <SidebarMenuitem
-            text="Explore"
-            Icon={MdTravelExplore}
-            active={tab == "Explore" ? true : false}
-          />
+          <div
+            onClick={() => {
+              router.push("/");
+            }}
+            className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${
+              tab == "Home" && "bg-green-100"
+            } `}
+          >
+            <HiHome className="h-7 w-7" />
+            <span
+              className={`${tab == "Home" && "font-bold"} hidden xl:inline`}
+            >
+              Home
+            </span>
+          </div>
+
+          <div
+            // onClick={() => {
+            //   router.push("/");
+            // }}
+            className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${
+              tab == "Explore" && "bg-green-100"
+            } `}
+          >
+            <MdTravelExplore className="h-7 w-7" />
+            <span
+              className={`${tab == "Explore" && "font-bold"} hidden xl:inline`}
+            >
+              Explore
+            </span>
+          </div>
 
           {session && (
             <>
-              <SidebarMenuitem
+              {/* <SidebarMenuitem
                 text="Notifications"
                 Icon={HiBell}
                 active={tab == "Notifications" ? true : false}
               />
-              <SidebarMenuitem
-                text="Messages"
-                Icon={MdMessage}
-                active={tab == "Messages" ? true : false}
-              />
-              <SidebarMenuitem
-                text="BookMark"
-                Icon={HiBookmark}
-                active={tab == "BookMark" ? true : false}
-              />
-              <SidebarMenuitem
+             */}
+
+              <div
+                // onClick={() => {
+                //   router.push("/");
+                // }}
+                className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${
+                  tab == "BookMark" && "bg-green-100"
+                } `}
+              >
+                <HiBookmark className="h-7 w-7" />
+                <span
+                  className={`${
+                    tab == "BookMark" && "font-bold"
+                  } hidden xl:inline`}
+                >
+                  BookMark
+                </span>
+              </div>
+
+              {/* <SidebarMenuitem
                 text="Lists"
                 Icon={MdListAlt}
                 active={tab == "Lists" ? true : false}
-              />
-              <SidebarMenuitem
-                text="Profile"
-                Icon={HiUserCircle}
-                active={tab == "Profile" ? true : false}
-              />
-              <SidebarMenuitem
+              /> */}
+
+              <div
+                // onClick={() => {
+                //   router.push("/");
+                // }}
+                className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${
+                  tab == "Profile" && "bg-green-100"
+                } `}
+              >
+                <HiUserCircle className="h-7 w-7" />
+                <span
+                  className={`${
+                    tab == "Profile" && "font-bold"
+                  } hidden xl:inline`}
+                >
+                  Profile
+                </span>
+              </div>
+
+              {/* <SidebarMenuitem
                 text="More"
                 Icon={HiDotsCircleHorizontal}
                 active={tab == "More" ? true : false}
-              />
-              <div onClick={signOut}>
-                <SidebarMenuitem text="Logout" Icon={HiOutlineLogout} />
+              /> */}
+
+              <div
+                onClick={signOut}
+                className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 "
+                } `}
+              >
+                <HiOutlineLogout className="h-7 w-7" />
+                <span
+                  className={`
+                  } hidden xl:inline`}
+                >
+                  Logout
+                </span>
               </div>
             </>
           )}
@@ -83,9 +141,9 @@ export default function Sidebar({ tab }) {
         {session ? (
           <>
             {/* button  */}
-            <button className="bg-green-500 text-white rounded-full w-56 h-12 font-bold shadow-md hover:brightness-95 text-lg hidden xl:inline">
+            {/* <button className="bg-green-500 text-white rounded-full w-56 h-12 font-bold shadow-md hover:brightness-95 text-lg hidden xl:inline">
               Tweet
-            </button>
+            </button> */}
 
             {/* mini profile */}
             <div className="hoverEffect text-green-800 flex items-center justify-center xl:justify-start mt-auto">

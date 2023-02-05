@@ -4,6 +4,7 @@ import Feed from "@/components/Feed";
 import Widgets from "@/components/Widgets";
 import CommentModal from "@/components/CommentModal";
 import BottomBar from "../components/BottomBar";
+import ShareModal from "@/components/ShareModal";
 
 export default function Home({ newsResults }) {
   return (
@@ -24,6 +25,7 @@ export default function Home({ newsResults }) {
         <Widgets newsResults={newsResults.articles} />
         {/* modal */}
         <CommentModal />
+        <ShareModal />
         {/* bottombar  */}
         <BottomBar tab="Home" />
       </main>

@@ -16,7 +16,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { deleteObject, ref } from "firebase/storage";
 import { useRecoilState } from "recoil";
-import { modalState, postIdState } from "@/atom/modalAtom";
+import { modalState, postIdState, shareModalState } from "@/atom/modalAtom";
 
 import { useRouter } from "next/router";
 
@@ -26,6 +26,7 @@ export default function Posts({ post, id }) {
   const [comments, setComments] = useState([]);
   const [hasliked, setHasLiked] = useState(false);
   const [open, setOpen] = useRecoilState(modalState);
+  const [openShare, setOpenShare] = useRecoilState(shareModalState);
   const [postId, setPostId] = useRecoilState(postIdState);
 
   const router = useRouter();
@@ -189,37 +190,53 @@ export default function Posts({ post, id }) {
               <span className="text-sm">{comments.length}</span>
             )}
           </div>
-          {session?.user.uid === post?.data()?.id && (
+
+          <div className=" flex items-center">
+            {hasliked ? (
+              <HiHeart
+                className="h-9 w-9 hoverEffect p-2 text-red-600 hover:bg-red-100"
+                onClick={likePost}
+              />
+            ) : (
+              <HiHeart
+                onClick={likePost}
+                className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
+              />
+            )}
+            {likes.length >= 0 && (
+              <span className={`${hasliked && "text-red-600"}`}>
+                {likes.length}
+              </span>
+            )}
+          </div>
+
+          <div className=" flex items-center">
+            <FaEye className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
+
+            {post?.data()?.views >= 0 && (
+              <span className="">{post?.data()?.views}</span>
+            )}
+          </div>
+
+          <BiShareAlt
+            onClick={() => {
+              if (!session) {
+                // signIn();
+                router.push("/auth/signin");
+              } else {
+                setPostId(id);
+                setOpenShare(!openShare);
+              }
+            }}
+            className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
+          />
+
+          {(session?.user.uid === post?.data()?.id || session?.user.admin) && (
             <BiTrashAlt
               className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
               onClick={deletePost}
             />
           )}
-
-          <div className="flex items-center">
-            <div className=" flex items-center">
-              {hasliked ? (
-                <HiHeart
-                  className="h-9 w-9 hoverEffect p-2 text-red-600 hover:bg-red-100"
-                  onClick={likePost}
-                />
-              ) : (
-                <HiHeart
-                  onClick={likePost}
-                  className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
-                />
-              )}
-              {likes.length >= 0 && (
-                <span className={`${hasliked && "text-red-600"}`}>
-                  {likes.length}
-                </span>
-              )}
-            </div>
-
-            <span className={`text-red-600 text-sm select-none`}></span>
-          </div>
-          <BiShareAlt className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
-          <FaEye className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
         </div>
       </div>
     </div>

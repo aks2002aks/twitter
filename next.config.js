@@ -5,11 +5,10 @@ const nextConfig = {
   images: {
     domains: [
       "toppng.com",
-      "upload.wikimedia.org",
       "lh3.googleusercontent.com",
       "localhost",
-      "images.unsplash.com",
       "firebasestorage.googleapis.com",
+      "e7.pngegg.com",
     ],
   },
 };

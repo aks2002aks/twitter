@@ -5,6 +5,8 @@ import { RecoilRoot } from "recoil";
 import LoadingBar from "react-top-loading-bar";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App({
   Component,
@@ -57,8 +59,22 @@ export default function App({
           waitingTime={1000}
           onLoaderFinished={() => setProgress(0)}
         />
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        {/* Same as */}
+        <ToastContainer />
         <Component {...pageProps} />
-        <div className="hidden lg:block fixed bottom-2 right-2">
+        <div className="float lg:block fixed bottom-12 md:bottom-2 right-2">
           <button
             type="button"
             onClick={scrollToTop}

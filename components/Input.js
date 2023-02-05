@@ -12,6 +12,9 @@ import {
 import { db, storage } from "../firebase";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { RxCrossCircled } from "react-icons/rx";
+import EmojiPicker from "emoji-picker-react";
+
+import { EmojiStyle } from "emoji-picker-react";
 
 export default function Input() {
   const { data: session } = useSession();
@@ -20,6 +23,7 @@ export default function Input() {
   const [anonymous, setAnonymous] = useState(false);
   const filePickerRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const sendPost = async () => {
     if (loading) return;
@@ -33,6 +37,7 @@ export default function Input() {
       username: session.user.username,
       verified: false,
       anonymous: anonymous,
+      views: 0,
     });
 
     const imageRef = ref(storage, `post/${docRef.id}/image`);
@@ -132,7 +137,24 @@ export default function Input() {
                       />
                     </div>
 
-                    <HiEmojiHappy className="h-8 w-8 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
+                    <HiEmojiHappy
+                      className="hidden sm:inline h-8 w-8 hoverEffect p-2 text-sky-500 hover:bg-sky-100"
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    />
+
+                    {showEmojiPicker && (
+                      <div className="absolute mt-10 ">
+                        <EmojiPicker
+                          width={300}
+                          height={400}
+                          emojiStyle={EmojiStyle.GOOGLE}
+                          onEmojiClick={(emoji) => {
+                            setInput(input + emoji.emoji);
+                            setShowEmojiPicker(false);
+                          }}
+                        />
+                      </div>
+                    )}
 
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
@@ -144,7 +166,7 @@ export default function Input() {
                       <div className="w-10 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[0px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     </label>
                     <span className="ml-3 mt-2 text-xs font-medium text-gray-900 dark:text-gray-300">
-                      upload as anonymous
+                      upload anonymously
                     </span>
                   </div>
                   <button

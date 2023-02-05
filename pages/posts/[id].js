@@ -9,22 +9,31 @@ import { useEffect, useState } from "react";
 import {
   collection,
   doc,
+  DocumentReference,
+  FieldValue,
+  increment,
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import Comment from "../../components/Comment";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 export default function PostPage({ newsResults, randomUsersResults }) {
   const router = useRouter();
   const { id } = router.query;
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    updateDoc(doc(db, "posts", id), { views: increment(1) });
+  }, []);
 
   // get the post data
-
   useEffect(
     () => onSnapshot(doc(db, "posts", id), (snapshot) => setPost(snapshot)),
     [db, id]

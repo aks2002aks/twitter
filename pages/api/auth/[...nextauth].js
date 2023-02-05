@@ -26,6 +26,12 @@ export const authOptions = {
         session.user.email.indexOf("@")
       );
 
+      if (session.user.uid === "116100035115086530709") {
+        session.user.admin = true;
+      } else {
+        session.user.admin = false;
+      }
+
       return session;
     },
   },
