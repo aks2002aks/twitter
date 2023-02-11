@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
-import { FaLock } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
-import { HiEye, HiEyeOff } from "react-icons/hi";
-import Link from "next/link";
 import { getProviders, signIn } from "next-auth/react";
+import signinpng from "../../public/signin.png";
+import Image from "next/image";
 
 export default function Signin({ providers }) {
   const [Show, setShow] = useState(false);
@@ -38,10 +36,11 @@ export default function Signin({ providers }) {
               />
             </video>
           </div>
-          <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
+          <div className="flex flex-col md:w-1/2 justify-center py-10 items-center bg-white">
+            <Image src={signinpng} width={400} height={400} alt="phoneimage" className="rotate-3" />
             {Object.values(providers).map((provider) => (
               <div className="" key={provider.id}>
-                <p >Person inside Kiit University Can Login</p>
+                <p>Person inside Kiit University Can Login</p>
                 <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5"></div>
 
                 <button

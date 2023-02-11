@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { HiHome, HiUserCircle, HiBell, HiLogin } from "react-icons/hi";
+import { HiHome, HiUserCircle, HiBell, HiLogin, HiBookmark } from "react-icons/hi";
 import { MdTravelExplore, MdMessage } from "react-icons/md";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+
 
 function BottomBar({ tab }) {
   const { data: session } = useSession();
@@ -58,20 +59,31 @@ function BottomBar({ tab }) {
             <MdTravelExplore size={20} />
           </div>
         )}
-        {/* {session && (
+
+        {tab == "BookMark" && session ? (
           <div
             id="tabs"
-            className={`${
-              tab == "Notification" ? "text-green-800 " : ""
-            }flex justify-center items-center  m-auto `}
+            className={`flex justify-center items-center  m-auto text-blue-800`}
+            onClick={() => router.push("/bookmark")}
           >
-            <HiBell size={20} />
+            <HiBookmark size={20} />
           </div>
-        )} */}
+        ) : (
+          <div
+            id="tabs"
+            className={`flex justify-center items-center  m-auto text-green-800 `}
+            onClick={() => router.push("/bookmark")}
+          >
+            <HiBookmark size={20} />
+          </div>
+        )}
+
+
         {session ? (
           <div
             id="tabs"
             className={`flex justify-center items-center  m-auto `}
+            onClick={() => router.push("/profile")}
           >
             <div className=" h-6 w-6">
               <Image

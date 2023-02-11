@@ -9,8 +9,6 @@ import { useEffect, useState } from "react";
 import {
   collection,
   doc,
-  DocumentReference,
-  FieldValue,
   increment,
   onSnapshot,
   orderBy,
@@ -21,6 +19,7 @@ import { db } from "../../firebase";
 import Comment from "../../components/Comment";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
+import ShareModal from "@/components/ShareModal";
 
 export default function PostPage({ newsResults, randomUsersResults }) {
   const router = useRouter();
@@ -107,6 +106,7 @@ export default function PostPage({ newsResults, randomUsersResults }) {
         {/* Modal */}
 
         <CommentModal />
+        <ShareModal />
       </main>
     </div>
   );

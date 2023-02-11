@@ -42,12 +42,6 @@ export default function CommentModal() {
       userImg: session.user.image,
       timestamp: serverTimestamp(),
       userId: session.user.uid,
-      // comment: input,
-      // name: currentUser.name,
-      // username: currentUser.username,
-      // userImg: currentUser.userImg,
-      // timestamp: serverTimestamp(),
-      // userId: currentUser.uid,
     });
 
     setOpen(false);

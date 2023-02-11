@@ -113,16 +113,16 @@ export default function ShareModal() {
               </TelegramShareButton>
             </div>
 
-            <div className="border-t border-gray-200 py-2 px-1.5">
+            <div className="border-t border-gray-200 py-2 px-1.5 ">
               <div className="flex items-center">
                 <input
                   type="text"
                   value={`https://kweet.vercel.app/posts/${postId}`}
                   readonly
-                  className="rounded-xl"
+                  className="rounded-xl w-[170px] sm:w-[250px] mr-2"
                 ></input>
                 <button
-                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-auto hover:brightness-75"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-auto hover:brightness-75 text-xs"
                   onClick={() => {
                     navigator.clipboard
                       .writeText(`https://kweet.vercel.app/posts/${postId}`)

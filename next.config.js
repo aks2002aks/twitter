@@ -9,6 +9,7 @@ const nextConfig = {
       "localhost",
       "firebasestorage.googleapis.com",
       "e7.pngegg.com",
+      "cdn.pixabay.com"
     ],
   },
 };

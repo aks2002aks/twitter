@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { HiEmojiHappy, HiPhotograph } from "react-icons/hi";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   addDoc,
   collection,
@@ -16,6 +16,8 @@ import EmojiPicker from "emoji-picker-react";
 
 import { EmojiStyle } from "emoji-picker-react";
 
+
+
 export default function Input() {
   const { data: session } = useSession();
   const [input, setInput] = useState("");
@@ -24,6 +26,19 @@ export default function Input() {
   const filePickerRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const eref = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (eref.current && !eref.current.contains(event.target)) {
+        setShowEmojiPicker(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [eref]);
 
   const sendPost = async () => {
     if (loading) return;
@@ -38,6 +53,8 @@ export default function Input() {
       verified: false,
       anonymous: anonymous,
       views: 0,
+      bookmarks: [],
+      likes: [],
     });
 
     const imageRef = ref(storage, `post/${docRef.id}/image`);
@@ -138,12 +155,12 @@ export default function Input() {
                     </div>
 
                     <HiEmojiHappy
-                      className="hidden sm:inline h-8 w-8 hoverEffect p-2 text-sky-500 hover:bg-sky-100"
+                      className={`hidden sm:inline h-8 w-8 hoverEffect p-2 text-sky-500 hover:bg-sky-100  ${showEmojiPicker && "text-green-900"}`}
                       onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                     />
 
                     {showEmojiPicker && (
-                      <div className="absolute mt-10 ">
+                      <div className="absolute mt-10 " ref={eref}>
                         <EmojiPicker
                           width={300}
                           height={400}

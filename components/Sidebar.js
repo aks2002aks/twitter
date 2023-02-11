@@ -36,9 +36,8 @@ export default function Sidebar({ tab }) {
             onClick={() => {
               router.push("/");
             }}
-            className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${
-              tab == "Home" && "bg-green-100"
-            } `}
+            className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${tab == "Home" && "bg-green-100"
+              } `}
           >
             <HiHome className="h-7 w-7" />
             <span
@@ -52,9 +51,8 @@ export default function Sidebar({ tab }) {
             // onClick={() => {
             //   router.push("/");
             // }}
-            className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${
-              tab == "Explore" && "bg-green-100"
-            } `}
+            className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${tab == "Explore" && "bg-green-100"
+              } `}
           >
             <MdTravelExplore className="h-7 w-7" />
             <span
@@ -74,20 +72,18 @@ export default function Sidebar({ tab }) {
              */}
 
               <div
-                // onClick={() => {
-                //   router.push("/");
-                // }}
-                className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${
-                  tab == "BookMark" && "bg-green-100"
-                } `}
+                onClick={() => {
+                  router.push("/bookmark");
+                }}
+                className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${tab == "BookMark" && "bg-green-100"
+                  } `}
               >
                 <HiBookmark className="h-7 w-7" />
                 <span
-                  className={`${
-                    tab == "BookMark" && "font-bold"
-                  } hidden xl:inline`}
+                  className={`${tab == "BookMark" && "font-bold"
+                    } hidden xl:inline`}
                 >
-                  BookMark
+                  BookMarks
                 </span>
               </div>
 
@@ -98,18 +94,16 @@ export default function Sidebar({ tab }) {
               /> */}
 
               <div
-                // onClick={() => {
-                //   router.push("/");
-                // }}
-                className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${
-                  tab == "Profile" && "bg-green-100"
-                } `}
+                onClick={() => {
+                  router.push("/profile");
+                }}
+                className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${tab == "Profile" && "bg-green-100"
+                  } `}
               >
                 <HiUserCircle className="h-7 w-7" />
                 <span
-                  className={`${
-                    tab == "Profile" && "font-bold"
-                  } hidden xl:inline`}
+                  className={`${tab == "Profile" && "font-bold"
+                    } hidden xl:inline`}
                 >
                   Profile
                 </span>
