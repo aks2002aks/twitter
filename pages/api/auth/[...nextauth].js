@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { serverTimestamp, setDoc, doc } from "firebase/firestore";
 
 export const authOptions = {
   // Configure one or more authentication providers

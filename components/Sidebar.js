@@ -48,9 +48,9 @@ export default function Sidebar({ tab }) {
           </div>
 
           <div
-            // onClick={() => {
-            //   router.push("/");
-            // }}
+            onClick={() => {
+              router.push("/explore");
+            }}
             className={`hoverEffect flex items-center text-green-800 justify-center xl:justify-start text-lg space-x-3 ${tab == "Explore" && "bg-green-100"
               } `}
           >

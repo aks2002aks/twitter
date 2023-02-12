@@ -86,7 +86,8 @@ export default function Posts({ post, id }) {
 
   useEffect(() => {
     setHasBookmarked(
-      bookmarks.findIndex((bookmark) => bookmark.id === session?.user.uid) !== -1
+      bookmarks.findIndex((bookmark) => bookmark.id === session?.user.uid) !==
+        -1
     );
   }, [bookmarks, session?.user.uid]);
 
@@ -98,13 +99,18 @@ export default function Posts({ post, id }) {
       { value: 1e9, symbol: "G" },
       { value: 1e12, symbol: "T" },
       { value: 1e15, symbol: "P" },
-      { value: 1e18, symbol: "E" }
+      { value: 1e18, symbol: "E" },
     ];
     const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
-    var item = lookup.slice().reverse().find(function (item) {
-      return num >= item.value;
-    });
-    return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+    var item = lookup
+      .slice()
+      .reverse()
+      .find(function (item) {
+        return num >= item.value;
+      });
+    return item
+      ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol
+      : "0";
   }
 
   async function likePost() {
@@ -113,14 +119,14 @@ export default function Posts({ post, id }) {
         await deleteDoc(doc(db, "posts", id, "likes", session?.user.uid));
         await updateDoc(doc(db, "posts", id), {
           likes: arrayRemove(session?.user.uid),
-        })
+        });
       } else {
         await setDoc(doc(db, "posts", id, "likes", session?.user.uid), {
           username: session?.user.username,
         });
         await updateDoc(doc(db, "posts", id), {
           likes: arrayUnion(session?.user.uid),
-        })
+        });
       }
     } else {
       signIn();
@@ -133,14 +139,14 @@ export default function Posts({ post, id }) {
         await deleteDoc(doc(db, "posts", id, "bookmarks", session?.user.uid));
         await updateDoc(doc(db, "posts", id), {
           bookmarks: arrayRemove(session?.user.uid),
-        })
+        });
       } else {
         await setDoc(doc(db, "posts", id, "bookmarks", session?.user.uid), {
           username: session?.user.username,
         });
         await updateDoc(doc(db, "posts", id), {
           bookmarks: arrayUnion(session?.user.uid),
-        })
+        });
       }
     } else {
       signIn();
@@ -167,6 +173,17 @@ export default function Posts({ post, id }) {
           alt="user-img"
           height={44}
           width={44}
+          onClick={() => {
+            if (session) {
+              if (post?.data()?.id == session.user.uid) {
+                router.push(`/profile`);
+              } else {
+                router.push(`/Profile/${post?.data()?.id}`);
+              }
+            } else {
+              router.push("/auth/signin");
+            }
+          }}
         />
       ) : (
         <Image
@@ -187,11 +204,37 @@ export default function Posts({ post, id }) {
           <div className="flex md:items-center sm:flex-row flex-col space-x-1  ">
             {!post?.data()?.anonymous ? (
               <>
-                <h4 className="  font-bold text-[15px] sm:text-[16px] hover:underline">
+                <h4
+                  className="  font-bold text-[15px] sm:text-[16px] hover:underline"
+                  onClick={() => {
+                    if (session) {
+                      if (post?.data()?.id == session.user.uid) {
+                        router.push("/profile");
+                      } else {
+                        router.push(`/Profile/${post?.data()?.id}`);
+                      }
+                    } else {
+                      router.push("/auth/signin");
+                    }
+                  }}
+                >
                   {post?.data()?.name}
                 </h4>
                 <div className="md:flex">
-                  <span className="  text-sm sm:text-[15px]">
+                  <span
+                    className="  text-sm sm:text-[15px]"
+                    onClick={() => {
+                      if (session) {
+                        if (post?.data()?.id == session.user.uid) {
+                          router.push("/profile");
+                        } else {
+                          router.push(`/Profile/${post?.data()?.id}`);
+                        }
+                      } else {
+                        router.push("/auth/signin");
+                      }
+                    }}
+                  >
                     @{post?.data()?.username} -
                   </span>
                   <span className="text-sm sm:text-[15px] hover:underline">
@@ -223,31 +266,39 @@ export default function Posts({ post, id }) {
               title="Not Verified Post"
             />
           )}
-          <BiDotsHorizontal className="h-10 hoverEffect w-10 hover:bg-sky-100 hover:text-sky-500 p-2 " onClick={() => { setMenu(true) }} />
+          <BiDotsHorizontal
+            className="h-10 hoverEffect w-10 hover:bg-sky-100 hover:text-sky-500 p-2 "
+            onClick={() => {
+              setMenu(!menu);
+            }}
+          />
 
-          <div className={`${menu ? "block" : "hidden"
-            } p-1 text-gray-800 bg-gray-200 absolute top-0 right-0 mt-7 mr-2 rounded-xl`} ref={ref}>
-            <div className="flex  justify-center items-center hoverEffect hover:text-sky-800 hover:bg-sky-400" onClick={() => {
-              if (!session) {
-                // signIn();
-                router.push("/auth/signin");
-              } else {
-                setOpenShare(!openShare);
-                setPostId(id);
-              }
-            }} >
-              <BiShareAlt
-
-                className="h-6 w-6 p-1"
-              /> Share
+          <div
+            className={`${
+              menu ? "inline" : "hidden"
+            } p-2 text-gray-800 bg-gray-200 absolute top-0 right-0 mt-7 mr-2 rounded-xl w-28 `}
+            ref={ref}
+          >
+            <div
+              className="flex  justify-center items-center  rounded-xl hover:text-sky-800 hover:bg-sky-400 p-1"
+              onClick={() => {
+                if (!session) {
+                  // signIn();
+                  router.push("/auth/signin");
+                } else {
+                  setOpenShare(!openShare);
+                  setPostId(id);
+                }
+              }}
+            >
+              <BiShareAlt className="h-6 w-6 p-1" /> Share
             </div>
-            <div className="flex  justify-center items-center hoverEffect hover:text-red-800 hover:bg-red-400" onClick={deletePost}>
-              {(session?.user.uid === post?.data()?.id || session?.user.admin) && (
-                <BiTrashAlt
-                  className="h-6 w-6 p-1"
-
-                />
-              )}
+            <div
+              className="flex  justify-center items-center rounded-xl  hover:text-red-800 hover:bg-red-400 p-1"
+              onClick={deletePost}
+            >
+              {(session?.user.uid === post?.data()?.id ||
+                session?.user.admin) && <BiTrashAlt className="h-6 w-6 p-1" />}
               Delete
             </div>
           </div>
@@ -257,7 +308,7 @@ export default function Posts({ post, id }) {
 
         <p
           onClick={() => router.push(`/posts/${id}`)}
-          className="text-gray-800 text-[15px sm:text-[16px] mb-2 break-all"
+          className="text-gray-800 text-[15px sm:text-[16px] mb-2 break-all mr-3"
         >
           {post?.data()?.text}
         </p>
@@ -325,14 +376,18 @@ export default function Posts({ post, id }) {
 
           <div className=" flex items-center">
             {hasBookmarked ? (
-              <BookmarkIcon className="h-9 w-9 hoverEffect p-2 text-sky-500
-               hover:bg-sky-100" onClick={bookmarkPost} />
+              <BookmarkIcon
+                className="h-9 w-9 hoverEffect p-2 text-sky-500
+               hover:bg-sky-100"
+                onClick={bookmarkPost}
+              />
             ) : (
-              <BookmarkIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" onClick={bookmarkPost} />
+              <BookmarkIcon
+                className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100"
+                onClick={bookmarkPost}
+              />
             )}
           </div>
-
-
         </div>
       </div>
     </div>

@@ -5,8 +5,49 @@ import Widgets from "@/components/Widgets";
 import CommentModal from "@/components/CommentModal";
 import BottomBar from "../components/BottomBar";
 import ShareModal from "@/components/ShareModal";
+import {
+  collection,
+  serverTimestamp,
+  setDoc,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  doc,
+  where,
+} from "firebase/firestore";
+import { db } from "../firebase";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export default function Home({ newsResults }) {
+  const [users, setUsers] = useState([]);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session && session.user && session.user.uid) {
+      onSnapshot(
+        query(collection(db, "users"), where("id", "==", session?.user?.uid)),
+        async (snapshot) => {
+          if (snapshot.empty) {
+            await setDoc(doc(db, "users", session?.user?.uid), {
+              id: session?.user.uid,
+              name: session?.user.name,
+              username: session?.user.username,
+              userImg: session?.user.image,
+              verified: false,
+              timestamp: serverTimestamp(),
+              bio: "",
+              website: "",
+              bgImage: "",
+              views: 0,
+            });
+          }
+        }
+      );
+    }
+  }, [session]);
+
   return (
     <>
       <Head>

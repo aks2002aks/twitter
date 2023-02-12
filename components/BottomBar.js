@@ -1,10 +1,15 @@
 import Image from "next/image";
-import { HiHome, HiUserCircle, HiBell, HiLogin, HiBookmark } from "react-icons/hi";
+import {
+  HiHome,
+  HiUserCircle,
+  HiBell,
+  HiLogin,
+  HiBookmark,
+} from "react-icons/hi";
 import { MdTravelExplore, MdMessage } from "react-icons/md";
 import { useSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-
 
 function BottomBar({ tab }) {
   const { data: session } = useSession();
@@ -48,6 +53,7 @@ function BottomBar({ tab }) {
           <div
             id="tabs"
             className={`flex justify-center items-center  m-auto text-blue-800`}
+            onClick={() => router.push("/explore")}
           >
             <MdTravelExplore size={20} />
           </div>
@@ -55,6 +61,7 @@ function BottomBar({ tab }) {
           <div
             id="tabs"
             className={`flex justify-center items-center  m-auto text-green-800 `}
+            onClick={() => router.push("/explore")}
           >
             <MdTravelExplore size={20} />
           </div>
@@ -77,7 +84,6 @@ function BottomBar({ tab }) {
             <HiBookmark size={20} />
           </div>
         )}
-
 
         {session ? (
           <div
