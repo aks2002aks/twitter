@@ -16,11 +16,34 @@ import BottomBar from "@/components/BottomBar";
 export default function Home({ newsResults }) {
   const router = useRouter();
   const [posts, setPosts] = useState([]);
+  const [trendingPosts, setTrendingPosts] = useState([]);
   const [bookmarks, setBookmarks] = useState([]);
   const [isRecommendation, setisRecommendation] = useState(true);
   const [isTrending, setisTrending] = useState(false);
   const { data: session } = useSession();
-  var p = [];
+
+  useEffect(() => {
+    onSnapshot(
+      query(collection(db, "posts"), orderBy("timestamp", "desc")),
+      (snapshot) => {
+        snapshot.docs.map((docs) => {
+          if (Math.random() > 0.5) {
+            posts.push(docs);
+          }
+        });
+        // setPosts(snapshot.docs);
+      }
+    );
+  }, [db]);
+
+  useEffect(() => {
+    onSnapshot(
+      query(collection(db, "posts"), orderBy("views", "desc")),
+      (snapshot) => {
+        setTrendingPosts(snapshot.docs);
+      }
+    );
+  }, [db]);
 
   return (
     <>
@@ -50,7 +73,7 @@ export default function Home({ newsResults }) {
             <div
               className={`${
                 isRecommendation && "bg-gray-400 "
-              } text-center hover:bg-gray-200 pt-2 pb-2 pl-8 pr-8`}
+              } text-center hover:bg-gray-200 pt-2 pb-2 pl-8 pr-8 font-normal`}
               onClick={() => {
                 setisRecommendation(true);
                 setisTrending(false);
@@ -61,7 +84,7 @@ export default function Home({ newsResults }) {
             <div
               className={`${
                 isTrending && "bg-gray-400 "
-              } text-center hover:bg-gray-200 pt-2 pb-2 pl-8 pr-8`}
+              } text-center hover:bg-gray-200 pt-2 pb-2 pl-8 pr-8 font-normal`}
               onClick={() => {
                 setisRecommendation(false);
                 setisTrending(true);
@@ -71,7 +94,45 @@ export default function Home({ newsResults }) {
             </div>
           </div>
 
-          <AnimatePresence></AnimatePresence>
+          {isRecommendation && (
+            <AnimatePresence>
+              {posts.map((post, index) => (
+                <div key={index}>
+                  {
+                    <motion.div
+                      key={post.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 1 }}
+                    >
+                      <Posts id={post.id} post={post} />
+                    </motion.div>
+                  }
+                </div>
+              ))}
+            </AnimatePresence>
+          )}
+
+          {isTrending && (
+            <AnimatePresence>
+              {trendingPosts.map((post, index) => (
+                <div key={index}>
+                  {
+                    <motion.div
+                      key={post.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 1 }}
+                    >
+                      <Posts id={post.id} post={post} />
+                    </motion.div>
+                  }
+                </div>
+              ))}
+            </AnimatePresence>
+          )}
         </div>
         {/* wigets */}
         <Widgets newsResults={newsResults.articles} />
