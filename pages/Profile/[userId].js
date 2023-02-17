@@ -109,7 +109,7 @@ export default function ProfilePage({ newsResults, randomUsersResults }) {
           <AnimatePresence>
             {posts.map((post) => (
               <div key={post.id}>
-                {post.data().id == userId && (
+                {post.data().id == userId && !post.data().anonymous && (
                   <motion.div
                     key={post.id}
                     initial={{ opacity: 0 }}

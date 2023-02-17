@@ -196,7 +196,7 @@ export default function Posts({ post, id }) {
       )}
 
       {/* right side */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative ">
         {/* Header */}
 
         <div className="flex items-center  justify-between md:whitespace-nowrap">

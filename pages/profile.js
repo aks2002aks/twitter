@@ -21,7 +21,6 @@ export default function Profile({ newsResults }) {
   const [isKweet, setisKweet] = useState(true);
   const [isLikedPost, setisLikedPost] = useState(false);
   const { data: session } = useSession();
-  
 
   useEffect(() => {
     onSnapshot(
@@ -116,18 +115,18 @@ export default function Profile({ newsResults }) {
             <AnimatePresence>
               {posts.map((post) => (
                 <div key={post.id}>
-                  {" "}
-                  {post.data().id == session?.user.uid && (
-                    <motion.div
-                      key={post.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 1 }}
-                    >
-                      <Posts id={post.id} post={post} />
-                    </motion.div>
-                  )}
+                  {post.data().id == session?.user.uid &&
+                    !post.data().anonymous && (
+                      <motion.div
+                        key={post.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1 }}
+                      >
+                        <Posts id={post.id} post={post} />
+                      </motion.div>
+                    )}
                 </div>
               ))}
             </AnimatePresence>

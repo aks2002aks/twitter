@@ -12,6 +12,7 @@ import ShareModal from "@/components/ShareModal";
 import { HiSparkles } from "react-icons/hi";
 import { AnimatePresence, motion } from "framer-motion";
 import BottomBar from "@/components/BottomBar";
+import MostViewed from "@/components/MostViewed";
 
 export default function Home({ newsResults }) {
   const router = useRouter();
@@ -90,7 +91,7 @@ export default function Home({ newsResults }) {
                 setisTrending(true);
               }}
             >
-              Trending
+              Most Viewed
             </div>
           </div>
 
@@ -114,25 +115,7 @@ export default function Home({ newsResults }) {
             </AnimatePresence>
           )}
 
-          {isTrending && (
-            <AnimatePresence>
-              {trendingPosts.map((post, index) => (
-                <div key={index}>
-                  {
-                    <motion.div
-                      key={post.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 1 }}
-                    >
-                      <Posts id={post.id} post={post} />
-                    </motion.div>
-                  }
-                </div>
-              ))}
-            </AnimatePresence>
-          )}
+          {isTrending && <MostViewed />}
         </div>
         {/* wigets */}
         <Widgets newsResults={newsResults.articles} />

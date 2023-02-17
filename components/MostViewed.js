@@ -1,28 +1,25 @@
-import { db } from "../firebase";
+import Posts from "../components/Posts";
+import { useEffect, useState } from "react";
 import {
   collection,
+  query,
   onSnapshot,
   orderBy,
-  query,
   limit,
 } from "firebase/firestore";
-import { useEffect } from "react";
-import { HiSparkles } from "react-icons/hi";
-import Input from "./Input";
-import Posts from "./Posts";
-import { useState } from "react";
+import { db } from "../firebase";
 import { AnimatePresence, motion } from "framer-motion";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { FaSpinner } from "react-icons/fa";
 
-export default function Feed() {
+export default function MostViewed() {
   const [posts, setPosts] = useState([]);
   const [batchSize, setBatchSize] = useState(8);
-  const [totalPosts, setTotalPosts] = useState(8);
+  const [totalPosts, setTotalPosts] = useState(0);
 
   useEffect(() => {
     return onSnapshot(
-      query(collection(db, "posts"), orderBy("timestamp", "desc")),
+      query(collection(db, "posts"), orderBy("views", "desc")),
       (snapshot) => {
         setTotalPosts(snapshot.docs.length);
       }
@@ -33,7 +30,7 @@ export default function Feed() {
     return onSnapshot(
       query(
         collection(db, "posts"),
-        orderBy("timestamp", "desc"),
+        orderBy("views", "desc"),
         limit(batchSize)
       ),
       (snapshot) => {
@@ -47,15 +44,7 @@ export default function Feed() {
   };
 
   return (
-    <div className="xl:ml-[375px] border-l sm:border-r lg:min-w-[576px] sm:ml-[73px] flex-grow max-w-[40rem] border-gray-200">
-      <div className="flex py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200">
-        <h2 className="text-lg sm:text-xl font-bold cursor-pointer">Home</h2>
-        <div className="text-green-800 hoverEffect items-center justify-center flex px-0 ml-auto w-9 h-9">
-          <HiSparkles className="h-6" />
-        </div>
-      </div>
-      <Input />
-
+    <div>
       <InfiniteScroll
         dataLength={posts.length}
         next={handleLoadMore}
@@ -72,16 +61,20 @@ export default function Feed() {
         }
       >
         <AnimatePresence>
-          {posts.map((post) => (
-            <motion.div
-              key={post.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1 }}
-            >
-              <Posts key={post.id} id={post.id} post={post} />
-            </motion.div>
+          {posts.map((post, index) => (
+            <div key={index}>
+              {
+                <motion.div
+                  key={post.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1 }}
+                >
+                  <Posts id={post.id} post={post} />
+                </motion.div>
+              }
+            </div>
           ))}
         </AnimatePresence>
       </InfiniteScroll>
