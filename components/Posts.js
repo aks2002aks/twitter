@@ -293,14 +293,16 @@ export default function Posts({ post, id }) {
             >
               <BiShareAlt className="h-6 w-6 p-1" /> Share
             </div>
-            <div
-              className="flex  justify-center items-center rounded-xl  hover:text-red-800 hover:bg-red-400 p-1"
-              onClick={deletePost}
-            >
-              {(session?.user.uid === post?.data()?.id ||
-                session?.user.admin) && <BiTrashAlt className="h-6 w-6 p-1" />}
-              Delete
-            </div>
+            {(session?.user.uid === post?.data()?.id ||
+              session?.user.admin) && (
+              <div
+                className="flex  justify-center items-center rounded-xl  hover:text-red-800 hover:bg-red-400 p-1"
+                onClick={deletePost}
+              >
+                <BiTrashAlt className="h-6 w-6 p-1" />
+                Delete
+              </div>
+            )}
           </div>
         </div>
 

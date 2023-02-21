@@ -60,7 +60,7 @@ export default function Widgets({ newsResults }) {
       </div>
 
       <div className="text-gray-700 space-y-3 bg-gray-100 rounded-xl pt-2 w-[90%] xl:w-[75%]">
-        <h4 className=" font-bold text-xl px-4">Who to Follow</h4>
+        <h4 className=" font-bold text-xl px-4">Top Accounts</h4>
         {/* map  */}
 
         <AnimatePresence>
